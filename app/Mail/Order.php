@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Models\Ingredient;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -12,7 +11,7 @@ class Order extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $order;
+    protected $ingredient;
 
 
     /**
@@ -22,7 +21,7 @@ class Order extends Mailable
      */
     public function __construct(Ingredient $ingredient)
     {
-        $this->order = $order;
+        $this->ingredient = $ingredient;
     }
 
     /**
@@ -32,8 +31,10 @@ class Order extends Mailable
      */
     public function build()
     {
+
+        $ingredient = $this->ingredient;
         $address = 'foodics@gmail.com';
-        $subject = 'Be care , your {{$ingredient->name}} is less than 50 %';
+        $subject = 'Be care , your' .$ingredient->name .'is less than 50 %';
         $name = 'Assem Khaleel';
 
         return $this->view('emails.ingredients')
