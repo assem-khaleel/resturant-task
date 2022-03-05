@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
-
-
     /**** Accepts the order details from the request payload , Persists the Order in the database. ****/
 
     public function storeOrder(Request $request, OrderRequest $orderRequest)
@@ -51,7 +49,6 @@ class OrderController extends Controller
 
     public function update(Order $order)
     {
-
         // get products related to specific order
         $products = Order::where('id', $order)->with(Product::class)->get();
 
@@ -65,12 +62,8 @@ class OrderController extends Controller
             }
         }
 
-
-        // check the updated stock of the ingredient
-        $this->checkQuantityIngredients($order, $id);
-
-        // check the stock of ingredients of 50 % ,, checkQuantityIngredients function
-
+          // check the updated stock of the ingredient
+          $this->checkQuantityIngredients($order, $id);
     }
 
     // create order
@@ -85,19 +78,14 @@ class OrderController extends Controller
     }
 
 
+    // check the quantity of Ingredients after updated stock
     protected function checkQuantityIngredients(Order $order, Ingredient $ingredient)
     {
         // get order then get products inside order then get ingredients stock after update the order
 
-
         $products = Order::where('id', $order)->with(Product::class)->get();
 
-
-        // just one item of ingredient
-
-
         $actualIngredient = Ingredient::where('id', $ingredient)->firstOrFail();
-
 
         foreach ($products->ingredient as $ingredient) {
 
